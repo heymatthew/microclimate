@@ -14,8 +14,17 @@ type Sample struct {
 	Path string
 }
 
+func CacheDir() string {
+	usr, err := user.Current()
+	if err != nil {
+		fmt.Printf("Cannot find current user: %v\n", err)
+		return ""
+	}
+	return usr.HomeDir + "/.microclimate"
+}
+
 func main() {
-	topo := setupTopography()
+	topo := SetupTopography()
 	fmt.Println(topo)
 
 	router := gin.Default()
@@ -32,14 +41,9 @@ func main() {
 	}
 }
 
-func setupTopography() pkg.Topography {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	topo := pkg.Topography{Dir: usr.HomeDir + "/.microclimate"}
-	err = topo.Load()
+func SetupTopography() pkg.Topography {
+	topo := pkg.Topography{Dir: CacheDir()}
+	err := topo.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
