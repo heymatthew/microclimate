@@ -15,30 +15,33 @@ type Sample struct {
 }
 
 func main() {
+	topo := setupTopography()
+	fmt.Println(topo)
+
 	router := gin.Default()
 	router.LoadHTMLGlob("web/templates/*")
-
+	router.Static("/static", "web/static")
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
 			"Visitor": "Doctor",
 		})
 	})
-	router.Static("/static", "web/static")
+	err := router.Run(":3000")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
+func setupTopography() pkg.Topography {
 	usr, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(usr.HomeDir)
 
 	topo := pkg.Topography{Dir: usr.HomeDir + "/.microclimate"}
 	err = topo.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	err = router.Run(":3000")
-	if err != nil {
-		log.Fatal(err)
-	}
+	return topo
 }
