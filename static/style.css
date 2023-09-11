@@ -26,3 +26,22 @@ p,ul,ol {
   color: #1d1d1d;
   font-family: sans-serif;
 }
+
+/* WIP Scrollsnap */
+/* TODO
+ * Can you stack containers?
+ */
+html { padding: 0 }
+body { margin: 0 }
+section {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  padding: 1em;
+}
+section p {
+  scroll-snap-align: start;
+}
+
