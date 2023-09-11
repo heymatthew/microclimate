@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -41,5 +42,8 @@ func main() {
 	})
 	router.Static("/static", "static")
 
-	router.Run(":3000")
+	err := router.Run(":3000")
+	if err != nil {
+		fmt.Println(fmt.Errorf("Failed to start: %v", err))
+	}
 }
