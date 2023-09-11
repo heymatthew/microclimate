@@ -1,4 +1,4 @@
-package microclimate
+package lib
 
 import (
 	"net/http"

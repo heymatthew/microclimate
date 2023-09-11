@@ -1,18 +1,18 @@
-package microclimate_test
+package lib_test
 
 import (
 	"os"
 	"path/filepath"
 	"testing"
 
-	"github.com/heymatthew/microclimate"
+	"github.com/heymatthew/microclimate/lib"
 	"github.com/matryer/is"
 )
 
 func TestTopographyErrors(t *testing.T) {
 	is := is.New(t)
 
-	top := microclimate.Topography{Dir: "/made/up/folder"}
+	top := lib.Topography{Dir: "/made/up/folder"}
 	err := top.Load()
 	is.True(err != nil)
 	is.Equal(len(top.Samples), 0)
@@ -30,7 +30,7 @@ func TestTopographyLoadFromDisk(t *testing.T) {
 	}
 
 	// Make sure they're both present
-	top := microclimate.Topography{Dir: config}
+	top := lib.Topography{Dir: config}
 	is.Equal(len(top.Samples), 0)
 	top.Load()
 	is.Equal(len(top.Samples), 2)
