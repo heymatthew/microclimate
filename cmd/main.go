@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os/user"
 
 	"github.com/gin-gonic/gin"
+	"github.com/heymatthew/microclimate/pkg"
 )
 
 type Sample struct {
@@ -22,8 +25,20 @@ func main() {
 	})
 	router.Static("/static", "web")
 
-	err := router.Run(":3000")
+	usr, err := user.Current()
 	if err != nil {
-		fmt.Println(fmt.Errorf("Failed to start: %v", err))
+		log.Fatal(err)
+	}
+	fmt.Println(usr.HomeDir)
+
+	topo := pkg.Topography{Dir: usr.HomeDir + "/.microclimate"}
+	err = topo.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = router.Run(":3000")
+	if err != nil {
+		log.Fatal(err)
 	}
 }
