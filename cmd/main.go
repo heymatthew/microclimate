@@ -16,14 +16,14 @@ type Sample struct {
 
 func main() {
 	router := gin.Default()
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob("web/templates/*")
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
 			"Visitor": "Doctor",
 		})
 	})
-	router.Static("/static", "web")
+	router.Static("/static", "web/static")
 
 	usr, err := user.Current()
 	if err != nil {
