@@ -9,29 +9,31 @@ import (
 	"github.com/matryer/is"
 )
 
-func TestTopographyErrors(t *testing.T) {
-	is := is.New(t)
+func TestTopography(t *testing.T) {
+	t.Run("gracefully handles missing folders", func(t *testing.T) {
+		is := is.New(t)
 
-	top := pkg.Topography{Dir: "/made/up/folder"}
-	err := top.Load()
-	is.True(err != nil)
-	is.Equal(len(top.Samples), 0)
-}
+		top := pkg.Topography{Dir: "/made/up/folder"}
+		err := top.Load()
+		is.True(err != nil)
+		is.Equal(len(top.Samples), 0)
+	})
 
-func TestTopographyLoadFromDisk(t *testing.T) {
-	is := is.New(t)
+	t.Run("finds files on disk", func(t *testing.T) {
+		is := is.New(t)
 
-	// Create samples
-	config := t.TempDir()
-	for _, file := range []string{"foo.md", "bar.md"} {
-		path := filepath.Join(config, file)
-		err := os.WriteFile(path, []byte("hello world"), 0644)
-		is.NoErr(err)
-	}
+		// Create samples
+		config := t.TempDir()
+		for _, file := range []string{"foo.md", "bar.md"} {
+			path := filepath.Join(config, file)
+			err := os.WriteFile(path, []byte("hello world"), 0644)
+			is.NoErr(err)
+		}
 
-	// Make sure they're both present
-	top := pkg.Topography{Dir: config}
-	is.Equal(len(top.Samples), 0)
-	is.NoErr(top.Load())
-	is.Equal(len(top.Samples), 2)
+		// Make sure they're both present
+		top := pkg.Topography{Dir: config}
+		is.Equal(len(top.Samples), 0)
+		is.NoErr(top.Load())
+		is.Equal(len(top.Samples), 2)
+	})
 }
