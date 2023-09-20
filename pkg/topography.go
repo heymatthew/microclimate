@@ -9,6 +9,10 @@ type Sample struct {
 	Path string
 }
 
+func (s Sample) Content() string {
+	return "hello world"
+}
+
 type Topography struct {
 	Dir     string
 	Samples []Sample

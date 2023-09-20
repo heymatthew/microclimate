@@ -36,4 +36,21 @@ func TestTopography(t *testing.T) {
 		is.NoErr(top.Load())
 		is.Equal(len(top.Samples), 2)
 	})
+
+	t.Run("loads content", func(t *testing.T) {
+		is := is.New(t)
+
+		// Create samples
+		config := t.TempDir()
+		for _, file := range []string{"foo.md", "bar.md"} {
+			path := filepath.Join(config, file)
+			err := os.WriteFile(path, []byte("hello world"), 0644)
+			is.NoErr(err)
+		}
+
+		// TODO: Assert content present
+		top := pkg.Topography{Dir: config}
+		is.NoErr(top.Load())
+		is.True(top.Samples[0].Content() == "hello world")
+	})
 }
