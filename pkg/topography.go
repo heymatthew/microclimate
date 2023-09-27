@@ -10,7 +10,11 @@ type Sample struct {
 }
 
 func (s Sample) Content() string {
-	return "hello world"
+	content, err := os.ReadFile(s.Path)
+	if err != nil {
+		panic(err)
+	}
+	return string(content)
 }
 
 type Topography struct {

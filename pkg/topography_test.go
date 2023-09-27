@@ -42,15 +42,16 @@ func TestTopography(t *testing.T) {
 
 		// Create samples
 		config := t.TempDir()
-		for _, file := range []string{"foo.md", "bar.md"} {
+		for _, str := range []string{"aaa", "bbb"} {
+			file := str + ".md"
 			path := filepath.Join(config, file)
-			err := os.WriteFile(path, []byte("hello world"), 0644)
+			err := os.WriteFile(path, []byte(str), 0644)
 			is.NoErr(err)
 		}
 
-		// TODO: Assert content present
 		top := pkg.Topography{Dir: config}
 		is.NoErr(top.Load())
-		is.True(top.Samples[0].Content() == "hello world")
+		is.True(top.Samples[0].Content() == "aaa")
+		is.True(top.Samples[1].Content() == "bbb")
 	})
 }
