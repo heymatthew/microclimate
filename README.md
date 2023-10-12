@@ -19,6 +19,8 @@ check out:
 * [Supermemo](https://www.supermemo.com/en) - Incremental Learning and Spaced Reptition
 * [Anki](https://apps.ankiweb.net/) - Flashcards with Spaced Repetition scheduling
 
+Caveat emptor.
+
 ## Roadmap
 
 See [Github issues](https://github.com/heymatthew/microclimate/issues).
