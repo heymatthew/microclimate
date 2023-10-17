@@ -1,8 +1,11 @@
 package pkg
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
+
+	"github.com/yuin/goldmark"
 )
 
 type Sample struct {
@@ -14,7 +17,12 @@ func (s Sample) Content() string {
 	if err != nil {
 		panic(err)
 	}
-	return string(content)
+	var buf bytes.Buffer
+	err = goldmark.Convert(content, &buf)
+	if err != nil {
+		panic(err)
+	}
+	return string(buf.String())
 }
 
 type Topography struct {
