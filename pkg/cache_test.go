@@ -19,7 +19,7 @@ func TestCache(t *testing.T) {
 		top := pkg.Cache{Dir: "/made/up/folder"}
 		err := top.Load()
 		is.True(err != nil)
-		is.Equal(len(top.Samples), 0)
+		is.Equal(len(top.Articles), 0)
 	})
 
 	t.Run("finds files on disk", func(t *testing.T) {
@@ -35,9 +35,9 @@ func TestCache(t *testing.T) {
 
 		// Make sure they're both present
 		top := pkg.Cache{Dir: config}
-		is.Equal(len(top.Samples), 0)
+		is.Equal(len(top.Articles), 0)
 		is.NoErr(top.Load())
-		is.Equal(len(top.Samples), 2)
+		is.Equal(len(top.Articles), 2)
 	})
 
 	t.Run("loads content", func(t *testing.T) {
@@ -54,8 +54,8 @@ func TestCache(t *testing.T) {
 
 		top := pkg.Cache{Dir: config}
 		is.NoErr(top.Load())
-		is.True(strings.Contains(top.Samples[0].Content(), "aaa"))
-		is.True(strings.Contains(top.Samples[1].Content(), "bbb"))
+		is.True(strings.Contains(top.Articles[0].Content(), "aaa"))
+		is.True(strings.Contains(top.Articles[1].Content(), "bbb"))
 	})
 
 	t.Run("translates markdown", func(t *testing.T) {
@@ -74,7 +74,7 @@ func TestCache(t *testing.T) {
 
 		top := pkg.Cache{Dir: config}
 		is.NoErr(top.Load())
-		body := top.Samples[0].Content()
+		body := top.Articles[0].Content()
 		fmt.Println(body)
 		is.True(strings.Contains(body, "content content content"))
 		is.True(strings.Contains(body, "<h1>Heading</h1>"))

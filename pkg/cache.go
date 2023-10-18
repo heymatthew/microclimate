@@ -26,8 +26,8 @@ func (s Sample) Content() string {
 }
 
 type Cache struct {
-	Dir     string
-	Samples []Sample
+	Dir      string
+	Articles []Sample
 }
 
 func (c *Cache) Load() error {
@@ -38,7 +38,7 @@ func (c *Cache) Load() error {
 		if info.IsDir() {
 			return nil
 		}
-		c.Samples = append(c.Samples, Sample{Path: path})
+		c.Articles = append(c.Articles, Sample{Path: path})
 		return nil
 	})
 }
