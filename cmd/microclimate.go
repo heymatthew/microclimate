@@ -41,8 +41,8 @@ func main() {
 	}
 }
 
-func SetupTopography() pkg.Topography {
-	topo := pkg.Topography{Dir: CacheDir()}
+func SetupTopography() pkg.Cache {
+	topo := pkg.Cache{Dir: CacheDir()}
 	err := topo.Load()
 	if err != nil {
 		log.Fatal(err)

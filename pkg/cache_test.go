@@ -12,11 +12,11 @@ import (
 	"github.com/matryer/is"
 )
 
-func TestTopography(t *testing.T) {
+func TestCache(t *testing.T) {
 	t.Run("gracefully handles missing folders", func(t *testing.T) {
 		is := is.New(t)
 
-		top := pkg.Topography{Dir: "/made/up/folder"}
+		top := pkg.Cache{Dir: "/made/up/folder"}
 		err := top.Load()
 		is.True(err != nil)
 		is.Equal(len(top.Samples), 0)
@@ -34,7 +34,7 @@ func TestTopography(t *testing.T) {
 		}
 
 		// Make sure they're both present
-		top := pkg.Topography{Dir: config}
+		top := pkg.Cache{Dir: config}
 		is.Equal(len(top.Samples), 0)
 		is.NoErr(top.Load())
 		is.Equal(len(top.Samples), 2)
@@ -52,7 +52,7 @@ func TestTopography(t *testing.T) {
 			is.NoErr(err)
 		}
 
-		top := pkg.Topography{Dir: config}
+		top := pkg.Cache{Dir: config}
 		is.NoErr(top.Load())
 		is.True(strings.Contains(top.Samples[0].Content(), "aaa"))
 		is.True(strings.Contains(top.Samples[1].Content(), "bbb"))
@@ -72,7 +72,7 @@ func TestTopography(t *testing.T) {
 		err := os.WriteFile(path, []byte(str), 0644)
 		is.NoErr(err)
 
-		top := pkg.Topography{Dir: config}
+		top := pkg.Cache{Dir: config}
 		is.NoErr(top.Load())
 		body := top.Samples[0].Content()
 		fmt.Println(body)

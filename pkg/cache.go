@@ -25,20 +25,20 @@ func (s Sample) Content() string {
 	return string(buf.String())
 }
 
-type Topography struct {
+type Cache struct {
 	Dir     string
 	Samples []Sample
 }
 
-func (t *Topography) Load() error {
-	return filepath.Walk(t.Dir, func(path string, info os.FileInfo, err error) error {
+func (c *Cache) Load() error {
+	return filepath.Walk(c.Dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		if info.IsDir() {
 			return nil
 		}
-		t.Samples = append(t.Samples, Sample{Path: path})
+		c.Samples = append(c.Samples, Sample{Path: path})
 		return nil
 	})
 }
