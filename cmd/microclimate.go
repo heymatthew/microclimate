@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os/user"
 
 	"github.com/gin-gonic/gin"
 	"github.com/heymatthew/microclimate/pkg"
+	"github.com/heymatthew/microclimate/web"
 )
 
 type Sample struct {
@@ -27,14 +29,7 @@ func main() {
 	topo := SetupTopography()
 	fmt.Println(topo)
 
-	router := gin.Default()
-	router.LoadHTMLGlob("web/templates/*")
-	router.Static("/static", "web/static")
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
-			"Visitor": "Doctor",
-		})
-	})
+	router := SetupRouter()
 	err := router.Run(":3000")
 	if err != nil {
 		log.Fatal(err)
@@ -48,4 +43,21 @@ func SetupTopography() pkg.Cache {
 		log.Fatal(err)
 	}
 	return topo
+}
+
+func SetupRouter() *gin.Engine {
+	router := gin.Default()
+	templ := template.Must(template.New("").ParseFS(web.Files, "templates/*.tmpl"))
+	router.SetHTMLTemplate(templ)
+
+	// FIXME Currently http://localhost:3000/static/static/style.css
+	// Only serve the one subdirectory
+	router.StaticFS("/static", http.FS(web.Files))
+
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
+			"Visitor": "Doctor",
+		})
+	})
+	return router
 }
