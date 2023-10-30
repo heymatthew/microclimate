@@ -56,7 +56,7 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
-			"Visitor": "Doctor",
+			"title": "Microclimate index",
 		})
 	})
 	return router
