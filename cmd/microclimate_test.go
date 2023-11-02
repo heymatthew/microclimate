@@ -15,10 +15,21 @@ func TestSetupTopography(t *testing.T) {
 }
 
 func TestSetupRouter(t *testing.T) {
-	is := is.New(t)
-	router := cmd.SetupRouter()
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/", nil)
-	router.ServeHTTP(w, req)
-	is.Equal(200, w.Code)
+	t.Run("root resolves", func(t *testing.T) {
+		is := is.New(t)
+		router := cmd.SetupRouter()
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/", nil)
+		router.ServeHTTP(w, req)
+		is.Equal(200, w.Code)
+	})
+
+	t.Run("css path is sensible", func(t *testing.T) {
+		is := is.New(t)
+		router := cmd.SetupRouter()
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/static/style.css", nil)
+		router.ServeHTTP(w, req)
+		is.Equal(200, w.Code)
+	})
 }

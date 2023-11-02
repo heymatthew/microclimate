@@ -50,9 +50,7 @@ func SetupRouter() *gin.Engine {
 	templ := template.Must(template.New("").ParseFS(web.Files, "templates/*.tmpl"))
 	router.SetHTMLTemplate(templ)
 
-	// FIXME Currently http://localhost:3000/static/static/style.css
-	// Only serve the one subdirectory
-	router.StaticFS("/static", http.FS(web.Files))
+	router.StaticFS("/static", http.FS(web.Static))
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{

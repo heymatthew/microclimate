@@ -1,6 +1,7 @@
 package web_test
 
 import (
+	"io"
 	"strings"
 	"testing"
 
@@ -26,5 +27,16 @@ func TestFiles(t *testing.T) {
 		index, err := web.Files.ReadFile("templates/index.html.tmpl")
 		is.True(err == nil)
 		is.True(strings.HasPrefix(string(index), "<!doctype html>"))
+	})
+}
+
+func TestStatic(t *testing.T) {
+	t.Run("finds style.css", func(t *testing.T) {
+		is := is.New(t)
+		file, err := web.Static.Open("style.css")
+		is.NoErr(err)
+		css, err := io.ReadAll(file)
+		is.NoErr(err)
+		is.True(string(css) != "")
 	})
 }
