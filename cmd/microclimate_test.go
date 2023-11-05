@@ -9,7 +9,7 @@ import (
 	"github.com/matryer/is"
 )
 
-func TestSetupTopography(t *testing.T) {
+func TestSetupCache(t *testing.T) {
 	is := is.New(t)
 	is.True(cmd.CacheDir() != "")
 }

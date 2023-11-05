@@ -26,8 +26,8 @@ func CacheDir() string {
 }
 
 func main() {
-	topo := SetupTopography()
-	fmt.Println(topo)
+	cache := SetupCache()
+	fmt.Println(cache)
 
 	router := SetupRouter()
 	err := router.Run(":3000")
@@ -36,13 +36,13 @@ func main() {
 	}
 }
 
-func SetupTopography() pkg.Cache {
-	topo := pkg.Cache{Dir: CacheDir()}
-	err := topo.Load()
+func SetupCache() pkg.Cache {
+	cache := pkg.Cache{Dir: CacheDir()}
+	err := cache.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return topo
+	return cache
 }
 
 func SetupRouter() *gin.Engine {
