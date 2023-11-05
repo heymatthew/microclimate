@@ -23,15 +23,15 @@ func TestCache(t *testing.T) {
 		is := is.New(t)
 
 		// Create samples
-		config := t.TempDir()
+		dir := t.TempDir()
 		for _, file := range []string{"foo.md", "bar.md"} {
-			path := filepath.Join(config, file)
+			path := filepath.Join(dir, file)
 			err := os.WriteFile(path, []byte("hello world"), 0644)
 			is.NoErr(err)
 		}
 
 		// Make sure they're both present
-		cache := pkg.Cache{Dir: config}
+		cache := pkg.Cache{Dir: dir}
 		is.Equal(len(cache.Articles), 0)
 		is.NoErr(cache.Load())
 		is.Equal(len(cache.Articles), 2)
