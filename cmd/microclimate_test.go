@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	cmd "github.com/heymatthew/microclimate/cmd"
+	"github.com/heymatthew/microclimate/pkg"
 	"github.com/matryer/is"
 )
 
@@ -17,7 +18,7 @@ func TestSetupCache(t *testing.T) {
 func TestSetupRouter(t *testing.T) {
 	t.Run("root resolves", func(t *testing.T) {
 		is := is.New(t)
-		router := cmd.SetupRouter()
+		router := cmd.SetupRouter(pkg.Cache{})
 		w := httptest.NewRecorder()
 		req, _ := http.NewRequest("GET", "/", nil)
 		router.ServeHTTP(w, req)
@@ -26,7 +27,7 @@ func TestSetupRouter(t *testing.T) {
 
 	t.Run("css path is sensible", func(t *testing.T) {
 		is := is.New(t)
-		router := cmd.SetupRouter()
+		router := cmd.SetupRouter(pkg.Cache{})
 		w := httptest.NewRecorder()
 		req, _ := http.NewRequest("GET", "/static/style.css", nil)
 		router.ServeHTTP(w, req)

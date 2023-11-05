@@ -27,9 +27,7 @@ func CacheDir() string {
 
 func main() {
 	cache := SetupCache()
-	fmt.Println(cache)
-
-	router := SetupRouter()
+	router := SetupRouter(cache)
 	err := router.Run(":3000")
 	if err != nil {
 		log.Fatal(err)
@@ -45,7 +43,9 @@ func SetupCache() pkg.Cache {
 	return cache
 }
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(cache pkg.Cache) *gin.Engine {
+	fmt.Println(cache)
+
 	router := gin.Default()
 	templ := template.Must(template.New("").ParseFS(web.Files, "templates/*.tmpl"))
 	router.SetHTMLTemplate(templ)
