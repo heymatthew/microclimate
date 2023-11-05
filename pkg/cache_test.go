@@ -13,11 +13,10 @@ import (
 func TestCache(t *testing.T) {
 	t.Run("gracefully handles missing folders", func(t *testing.T) {
 		is := is.New(t)
-
-		top := pkg.Cache{Dir: "/made/up/folder"}
-		err := top.Load()
+		cache := pkg.Cache{Dir: "/made/up/folder"}
+		err := cache.Load()
 		is.True(err != nil)
-		is.Equal(len(top.Articles), 0)
+		is.Equal(len(cache.Articles), 0)
 	})
 
 	t.Run("finds files on disk", func(t *testing.T) {
@@ -32,10 +31,10 @@ func TestCache(t *testing.T) {
 		}
 
 		// Make sure they're both present
-		top := pkg.Cache{Dir: config}
-		is.Equal(len(top.Articles), 0)
-		is.NoErr(top.Load())
-		is.Equal(len(top.Articles), 2)
+		cache := pkg.Cache{Dir: config}
+		is.Equal(len(cache.Articles), 0)
+		is.NoErr(cache.Load())
+		is.Equal(len(cache.Articles), 2)
 	})
 
 	t.Run("loads content", func(t *testing.T) {
@@ -50,9 +49,9 @@ func TestCache(t *testing.T) {
 			is.NoErr(err)
 		}
 
-		top := pkg.Cache{Dir: config}
-		is.NoErr(top.Load())
-		is.True(strings.Contains(top.Articles[0].Content(), "aaa"))
-		is.True(strings.Contains(top.Articles[1].Content(), "bbb"))
+		cache := pkg.Cache{Dir: config}
+		is.NoErr(cache.Load())
+		is.True(strings.Contains(cache.Articles[0].Content(), "aaa"))
+		is.True(strings.Contains(cache.Articles[1].Content(), "bbb"))
 	})
 }
