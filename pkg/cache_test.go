@@ -10,6 +10,19 @@ import (
 	"github.com/matryer/is"
 )
 
+func createSamples(dir string, names []string) error {
+	for _, str := range names {
+		file := str + ".md"
+		path := filepath.Join(dir, file)
+		err := os.WriteFile(path, []byte(str), 0644)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func TestCache(t *testing.T) {
 	t.Run("gracefully handles missing folders", func(t *testing.T) {
 		is := is.New(t)
@@ -21,16 +34,8 @@ func TestCache(t *testing.T) {
 
 	t.Run("finds files on disk", func(t *testing.T) {
 		is := is.New(t)
-
-		// Create samples
 		dir := t.TempDir()
-		for _, file := range []string{"foo.md", "bar.md"} {
-			path := filepath.Join(dir, file)
-			err := os.WriteFile(path, []byte("hello world"), 0644)
-			is.NoErr(err)
-		}
-
-		// Make sure they're both present
+		is.NoErr(createSamples(dir, []string{"aaa", "bbb"}))
 		cache := pkg.Cache{Dir: dir}
 		is.Equal(len(cache.Articles), 0)
 		is.NoErr(cache.Load())
@@ -39,16 +44,8 @@ func TestCache(t *testing.T) {
 
 	t.Run("loads content", func(t *testing.T) {
 		is := is.New(t)
-
-		// Create samples
 		dir := t.TempDir()
-		for _, str := range []string{"aaa", "bbb"} {
-			file := str + ".md"
-			path := filepath.Join(dir, file)
-			err := os.WriteFile(path, []byte(str), 0644)
-			is.NoErr(err)
-		}
-
+		is.NoErr(createSamples(dir, []string{"aaa", "bbb"}))
 		cache := pkg.Cache{Dir: dir}
 		is.NoErr(cache.Load())
 		is.True(strings.Contains(cache.Articles[0].Content(), "aaa"))
