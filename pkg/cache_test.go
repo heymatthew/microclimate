@@ -41,15 +41,15 @@ func TestCache(t *testing.T) {
 		is := is.New(t)
 
 		// Create samples
-		config := t.TempDir()
+		dir := t.TempDir()
 		for _, str := range []string{"aaa", "bbb"} {
 			file := str + ".md"
-			path := filepath.Join(config, file)
+			path := filepath.Join(dir, file)
 			err := os.WriteFile(path, []byte(str), 0644)
 			is.NoErr(err)
 		}
 
-		cache := pkg.Cache{Dir: config}
+		cache := pkg.Cache{Dir: dir}
 		is.NoErr(cache.Load())
 		is.True(strings.Contains(cache.Articles[0].Content(), "aaa"))
 		is.True(strings.Contains(cache.Articles[1].Content(), "bbb"))
