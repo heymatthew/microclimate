@@ -54,7 +54,8 @@ func SetupRouter(cache pkg.Cache) *gin.Engine {
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html.tmpl", gin.H{
-			"title": "Microclimate index",
+			"title":    "Microclimate index",
+			"articles": cache.Articles,
 		})
 	})
 	return router

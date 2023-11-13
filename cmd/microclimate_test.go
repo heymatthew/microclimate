@@ -61,4 +61,21 @@ func TestSetupRouter(t *testing.T) {
 		router.ServeHTTP(w, req)
 		is.Equal(200, w.Code)
 	})
+
+	t.Run("lists articles from cache", func(t *testing.T) {
+		is := is.New(t)
+		cache := pkg.Cache{
+			Articles: []pkg.Sample{
+				{Path: "foo"},
+				{Path: "bar"},
+			},
+		}
+		router := cmd.SetupRouter(cache)
+		w := httptest.NewRecorder()
+		req, _ := http.NewRequest("GET", "/", nil)
+		router.ServeHTTP(w, req)
+		doc, err := html.Parse(w.Body)
+		is.NoErr(err)
+		is.Equal(countTags("a", doc), 2)
+	})
 }
