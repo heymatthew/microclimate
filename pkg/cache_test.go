@@ -43,3 +43,24 @@ func TestCache(t *testing.T) {
 		is.True(strings.Contains(cache.Articles[1].Content(), "bbb"))
 	})
 }
+
+func TestLoad(t *testing.T) {
+	t.Run("lists markdown files", func(t *testing.T) {
+		is := is.New(t)
+		dir := t.TempDir()
+		is.NoErr(createSamples(dir, []string{"markdown.md"}))
+		cache := pkg.Cache{Dir: dir}
+		is.NoErr(cache.Load())
+		is.Equal(len(cache.Articles), 1)
+	})
+
+	t.Run("does not list excluded files", func(t *testing.T) {
+		excludes_list := []string{".gitignore", "guff.html"}
+		is := is.New(t)
+		dir := t.TempDir()
+		is.NoErr(createSamples(dir, excludes_list))
+		cache := pkg.Cache{Dir: dir}
+		is.NoErr(cache.Load())
+		is.Equal(len(cache.Articles), 0)
+	})
+}

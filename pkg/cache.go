@@ -3,6 +3,7 @@ package pkg
 import (
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Cache struct {
@@ -16,6 +17,9 @@ func (c *Cache) Load() error {
 			return err
 		}
 		if info.IsDir() {
+			return nil
+		}
+		if !strings.HasSuffix(path, ".md") {
 			return nil
 		}
 		c.Articles = append(c.Articles, Sample{Path: path})
