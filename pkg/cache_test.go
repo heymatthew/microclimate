@@ -11,10 +11,9 @@ import (
 )
 
 func createSamples(dir string, names []string) error {
-	for _, str := range names {
-		file := str + ".md"
-		path := filepath.Join(dir, file)
-		err := os.WriteFile(path, []byte(str), 0644)
+	for _, name := range names {
+		path := filepath.Join(dir, name)
+		err := os.WriteFile(path, []byte(name), 0644)
 		if err != nil {
 			return err
 		}
@@ -32,22 +31,14 @@ func TestCache(t *testing.T) {
 		is.Equal(len(cache.Articles), 0)
 	})
 
-	t.Run("finds files on disk", func(t *testing.T) {
+	t.Run("loads content from disk", func(t *testing.T) {
 		is := is.New(t)
 		dir := t.TempDir()
-		is.NoErr(createSamples(dir, []string{"aaa", "bbb"}))
+		is.NoErr(createSamples(dir, []string{"aaa.md", "bbb.md"}))
 		cache := pkg.Cache{Dir: dir}
 		is.Equal(len(cache.Articles), 0)
 		is.NoErr(cache.Load())
 		is.Equal(len(cache.Articles), 2)
-	})
-
-	t.Run("loads content", func(t *testing.T) {
-		is := is.New(t)
-		dir := t.TempDir()
-		is.NoErr(createSamples(dir, []string{"aaa", "bbb"}))
-		cache := pkg.Cache{Dir: dir}
-		is.NoErr(cache.Load())
 		is.True(strings.Contains(cache.Articles[0].Content(), "aaa"))
 		is.True(strings.Contains(cache.Articles[1].Content(), "bbb"))
 	})
