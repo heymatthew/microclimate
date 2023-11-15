@@ -12,10 +12,6 @@ import (
 	"github.com/heymatthew/microclimate/web"
 )
 
-type Sample struct {
-	Path string
-}
-
 func CacheDir() string {
 	usr, err := user.Current()
 	if err != nil {
