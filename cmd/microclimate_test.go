@@ -65,7 +65,7 @@ func TestSetupRouter(t *testing.T) {
 	t.Run("lists articles from cache", func(t *testing.T) {
 		is := is.New(t)
 		cache := pkg.Cache{
-			Articles: []pkg.Sample{
+			Articles: []pkg.Article{
 				{Path: "foo"},
 				{Path: "bar"},
 			},

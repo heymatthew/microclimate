@@ -11,14 +11,14 @@ import (
 
 type Cache struct {
 	Dir      string
-	Articles []Sample
+	Articles []Article
 }
 
-type Sample struct {
+type Article struct {
 	Path string
 }
 
-func (s Sample) Content() string {
+func (s Article) Content() string {
 	content, err := os.ReadFile(s.Path)
 	if err != nil {
 		panic(err)
@@ -42,7 +42,7 @@ func (c *Cache) Load() error {
 		if !strings.HasSuffix(path, ".md") {
 			return nil
 		}
-		c.Articles = append(c.Articles, Sample{Path: path})
+		c.Articles = append(c.Articles, Article{Path: path})
 		return nil
 	})
 }

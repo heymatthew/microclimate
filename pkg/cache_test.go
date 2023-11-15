@@ -12,7 +12,7 @@ import (
 	"github.com/matryer/is"
 )
 
-func createSamples(dir string, names []string) error {
+func createArticles(dir string, names []string) error {
 	for _, name := range names {
 		path := filepath.Join(dir, name)
 		err := os.WriteFile(path, []byte(name), 0644)
@@ -36,7 +36,7 @@ func TestCache(t *testing.T) {
 	t.Run("loads content from disk", func(t *testing.T) {
 		is := is.New(t)
 		dir := t.TempDir()
-		is.NoErr(createSamples(dir, []string{"aaa.md", "bbb.md"}))
+		is.NoErr(createArticles(dir, []string{"aaa.md", "bbb.md"}))
 		cache := pkg.Cache{Dir: dir}
 		is.Equal(len(cache.Articles), 0)
 		is.NoErr(cache.Load())
@@ -48,7 +48,7 @@ func TestCache(t *testing.T) {
 	t.Run("lists markdown files", func(t *testing.T) {
 		is := is.New(t)
 		dir := t.TempDir()
-		is.NoErr(createSamples(dir, []string{"markdown.md"}))
+		is.NoErr(createArticles(dir, []string{"markdown.md"}))
 		cache := pkg.Cache{Dir: dir}
 		is.NoErr(cache.Load())
 		is.Equal(len(cache.Articles), 1)
@@ -58,14 +58,14 @@ func TestCache(t *testing.T) {
 		excludes_list := []string{".gitignore", "guff.html"}
 		is := is.New(t)
 		dir := t.TempDir()
-		is.NoErr(createSamples(dir, excludes_list))
+		is.NoErr(createArticles(dir, excludes_list))
 		cache := pkg.Cache{Dir: dir}
 		is.NoErr(cache.Load())
 		is.Equal(len(cache.Articles), 0)
 	})
 }
 
-func TestSample(t *testing.T) {
+func TestArticle(t *testing.T) {
 	t.Run("translates markdown", func(t *testing.T) {
 		is := is.New(t)
 
@@ -79,8 +79,8 @@ func TestSample(t *testing.T) {
 		err := os.WriteFile(path, []byte(str), 0644)
 		is.NoErr(err)
 
-		sample := pkg.Sample{Path: path}
-		body := sample.Content()
+		article := pkg.Article{Path: path}
+		body := article.Content()
 		fmt.Println(body)
 		is.True(strings.Contains(body, "content content content"))
 		is.True(strings.Contains(body, "<h1>Heading</h1>"))
