@@ -68,15 +68,13 @@ func TestCache(t *testing.T) {
 func TestArticle(t *testing.T) {
 	t.Run("translates markdown", func(t *testing.T) {
 		is := is.New(t)
-
-		// Create samples
-		str := dedent.Dedent(`
+		sample := dedent.Dedent(`
 			# Heading
 
 			content content content
 		`)
 		path := filepath.Join(t.TempDir() + "test.md")
-		err := os.WriteFile(path, []byte(str), 0644)
+		err := os.WriteFile(path, []byte(sample), 0644)
 		is.NoErr(err)
 
 		article := pkg.Article{Path: path}
