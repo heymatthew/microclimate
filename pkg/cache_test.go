@@ -44,9 +44,7 @@ func TestCache(t *testing.T) {
 		is.True(strings.Contains(cache.Articles[0].Content(), "aaa"))
 		is.True(strings.Contains(cache.Articles[1].Content(), "bbb"))
 	})
-}
 
-func TestLoad(t *testing.T) {
 	t.Run("lists markdown files", func(t *testing.T) {
 		is := is.New(t)
 		dir := t.TempDir()
