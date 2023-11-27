@@ -1,7 +1,6 @@
 package pkg_test
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -79,7 +78,6 @@ func TestArticle(t *testing.T) {
 
 		article := pkg.Article{Path: path}
 		body := article.Content()
-		fmt.Println(body)
 		is.True(strings.Contains(body, "content content content"))
 		is.True(strings.Contains(body, "<h1>Heading</h1>"))
 	})
