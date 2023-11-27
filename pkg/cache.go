@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +16,7 @@ type Cache struct {
 }
 
 type Article struct {
-	Path string
+	Path, Title string
 }
 
 func (s Article) Content() string {

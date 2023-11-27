@@ -81,4 +81,23 @@ func TestArticle(t *testing.T) {
 		is.True(strings.Contains(body, "content content content"))
 		is.True(strings.Contains(body, "<h1>Heading</h1>"))
 	})
+
+	t.Run("exposes metadata", func(t *testing.T) {
+		is := is.New(t)
+		sample := dedent.Dedent(`
+			---
+			title: 3 Ways to Tame Toddler Tantrums
+			---
+
+			Last night, while my 3-year-old played in the living room
+		`)
+		path := filepath.Join(t.TempDir() + "test.md")
+		err := os.WriteFile(path, []byte(sample), 0644)
+		is.NoErr(err)
+
+		article := pkg.Article{Path: path}
+		body := article.Content()
+		is.Equal(article.Title, "3 Ways to Tame Toddler Tantrums")
+		is.True(strings.Contains(body, "my 3-year-old played in the living room"))
+	})
 }
