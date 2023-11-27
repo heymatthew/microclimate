@@ -21,7 +21,7 @@ type Article struct {
 func (s Article) Content() string {
 	content, err := os.ReadFile(s.Path)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("Can not read %s: %w", s.Path, err))
 	}
 	var buf bytes.Buffer
 	err = goldmark.Convert(content, &buf)
