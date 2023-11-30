@@ -96,8 +96,18 @@ func TestArticle(t *testing.T) {
 		is.NoErr(err)
 
 		article := pkg.Article{Path: path}
-		body := article.Content()
-		is.Equal(article.Title, "3 Ways to Tame Toddler Tantrums")
-		is.True(strings.Contains(body, "my 3-year-old played in the living room"))
+		is.Equal(article.Title(), "3 Ways to Tame Toddler Tantrums")
+		is.True(!strings.Contains(article.Content(), "3 Ways to Tame Toddler Tantrums"))
+	})
+}
+
+func TestMetadata(t *testing.T) {
+	t.Run("loads title", func(t *testing.T) {
+		is := is.New(t)
+		m := pkg.NewMetadata()
+		is.Equal(m.Title, "Easy!")
+	})
+
+	t.Run("handles missing data", func(t *testing.T) {
 	})
 }

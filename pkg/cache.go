@@ -8,6 +8,9 @@ import (
 	"strings"
 
 	"github.com/yuin/goldmark"
+	meta "github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/text"
+	"gopkg.in/yaml.v2"
 )
 
 type Cache struct {
@@ -16,7 +19,7 @@ type Cache struct {
 }
 
 type Article struct {
-	Path, Title string
+	Path string
 }
 
 func (s Article) Content() string {
@@ -30,6 +33,42 @@ func (s Article) Content() string {
 		panic(err)
 	}
 	return string(buf.String())
+}
+
+// n.b. Does not handle tabs
+var data = `
+title: Easy!
+`
+
+type Metadata struct {
+	Title string
+}
+
+func NewMetadata() Metadata {
+	m := Metadata{}
+	yaml.Unmarshal([]byte(data), &m)
+	return m
+}
+
+func (s Article) Title() string {
+	markdown := goldmark.New(
+		goldmark.WithExtensions(
+			meta.New(
+				meta.WithStoresInDocument(),
+			),
+		),
+	)
+	source := `---
+title: toddler tantrums inline
+---
+data data data
+`
+	source = "Hello"
+
+	document := markdown.Parser().Parse(text.NewReader([]byte(source)))
+	metaData := document.OwnerDocument().Meta()
+	title := metaData["title"]
+	return title.(string)
 }
 
 func (c *Cache) Load() error {
